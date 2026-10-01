@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Tu Juego — Un mundo donde la magia tiene precio</title>
+
+<!-- Tipografías -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  /* ============ VARIABLES DE COLOR ============ */
+  :root{
+    --bg-primary:   #0F1F1A;   /* verde bosque profundo */
+    --bg-secondary: #142822;   /* verde un poco más claro */
+    --bg-earth:     #2B1F17;   /* café tierra */
+    --accent:       #3DDC97;   /* verde esmeralda mágico */
+    --accent-2:     #D4A24C;   /* dorado mágico */
+    --text:         #E8F0EA;   /* blanco hueso */
+    --text-muted:   #A8BDB0;   /* verde grisáceo */
+    --border:       rgba(61,220,151,0.15);
+  }
+
+  /* ============ RESET ============ */
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    font-family:'Inter', sans-serif;
+    background:var(--bg-primary);
+    color:var(--text);
+    line-height:1.7;
+    overflow-x:hidden;
+  }
+  h1,h2,h3{ font-family:'Cinzel', serif; font-weight:700; letter-spacing:0.02em; }
+  a{ color:inherit; text-decoration:none; }
+  img{ max-width:100%; display:block; }
+
+  /* ============ NAV ============ */
+  nav{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    padding:1.2rem 2rem;
+    display:flex; justify-content:space-between; align-items:center;
+    background:rgba(15,31,26,0.75);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--border);
+  }
+  nav .logo{
+    font-family:'Cinzel', serif; font-weight:700;
+    font-size:1.2rem; color:var(--accent-2);
+    letter-spacing:0.1em;
+  }
+  nav ul{ display:flex; gap:2rem; list-style:none; }
+  nav ul a{
+    font-size:0.9rem; font-weight:500;
+    color:var(--text-muted); transition:color .3s;
+  }
+  nav ul a:hover{ color:var(--accent); }
+
+  @media(max-width:768px){
+    nav ul{ display:none; }
+  }
+
+  /* ============ HERO ============ */
+  .hero{
+    min-height:100vh;
+    display:flex; align-items:center; justify-content:center;
+    text-align:center;
+    padding:8rem 2rem 4rem;
+    position:relative;
+    background:
+      radial-gradient(ellipse at 50% 40%, rgba(61,220,151,0.15), transparent 60%),
+      radial-gradient(ellipse at 80% 80%, rgba(212,162,76,0.10), transparent 55%),
+      var(--bg-primary);
+  }
+  .hero::after{
+    content:"";
+    position:absolute; inset:0;
+    background:
+      repeating-linear-gradient(45deg, transparent 0 40px, rgba(61,220,151,0.02) 40px 41px);
+    pointer-events:none;
+  }
+  .hero-content{ position:relative; z-index:2; max-width:900px; }
+  .hero .eyebrow{
+    font-size:0.85rem; letter-spacing:0.4em; text-transform:uppercase;
+    color:var(--accent-2); margin-bottom:1.5rem;
+  }
+  .hero h1{
+    font-size:clamp(2.5rem, 6vw, 4.5rem);
+    line-height:1.1; margin-bottom:1.5rem;
+    background:linear-gradient(135deg, var(--text) 0%, var(--accent) 100%);
+    -webkit-background-clip:text; background-clip:text;
+    -webkit-text-fill-color:transparent;
+  }
+  .hero p{
+    font-size:1.15rem; color:var(--text-muted);
+    max-width:600px; margin:0 auto 2.5rem;
+  }
+  .btn{
+    display:inline-block;
+    padding:1rem 2.5rem;
+    border-radius:50px;
+    font-weight:600; font-size:0.95rem;
+    letter-spacing:0.05em;
+    transition:transform .3s, box-shadow .3s, background .3s;
+    cursor:pointer; border:none;
+  }
+  .btn-primary{
+    background:linear-gradient(135deg, var(--accent), #2BAF7A);
+    color:#06231A;
+    box-shadow:0 0 0 0 rgba(61,220,151,0.5);
+  }
+  .btn-primary:hover{
+    transform:translateY(-3px);
+    box-shadow:0 10px 30px -5px rgba(61,220,151,0.5);
+  }
+  .btn-ghost{
+    background:transparent;
+    border:1px solid var(--accent-2);
+    color:var(--accent-2);
+    margin-left:1rem;
+  }
+  .btn-ghost:hover{ background:rgba(212,162,76,0.1); }
+
+  @media(max-width:600px){
+    .btn-ghost{ margin-left:0; margin-top:1rem; }
+  }
+
+  /* ============ SECCIONES ============ */
+  section{ padding:6rem 2rem; position:relative; }
+  .container{ max-width:1100px; margin:0 auto; }
+
+  .section-header{
+    text-align:center; margin-bottom:4rem;
+  }
+  .section-header .eyebrow{
+    font-size:0.8rem; letter-spacing:0.35em; text-transform:uppercase;
+    color:var(--accent-2); margin-bottom:1rem;
+  }
+  .section-header h2{
+    font-size:clamp(2rem, 4vw, 3rem);
+    margin-bottom:1rem;
+  }
+  .section-header p{
+    color:var(--text-muted); max-width:650px; margin:0 auto;
+  }
+
+  /* Alternar fondos */
+  .bg-earth{ background:var(--bg-earth); }
+  .bg-secondary{ background:var(--bg-secondary); }
+
+  /* ============ ABOUT ============ */
+  .about-grid{
+    display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:center;
+  }
+  .about-text h3{ font-size:1.8rem; margin-bottom:1.5rem; }
+  .about-text p{ color:var(--text-muted); margin-bottom:1.2rem; }
+  .about-visual{
+    aspect-ratio:4/5;
+    border-radius:16px;
+    background:linear-gradient(135deg, var(--bg-earth), #1A3A2E);
+    border:1px solid var(--border);
+    position:relative; overflow:hidden;
+  }
+  .about-visual::after{
+    content:"✦";
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    font-size:5rem; color:var(--accent); opacity:0.3;
+  }
+  @media(max-width:768px){
+    .about-grid{ grid-template-columns:1fr; gap:2rem; }
+  }
+
+/* ============ STORY IMAGE ============ */
+.story-visual{
+  text-align:center;
+}
+.story-img{
+  width:100%;
+  max-width:900px;
+  margin:0 auto;
+  border-radius:16px;
+  border:1px solid var(--accent-2);
+  box-shadow:0 20px 60px -20px rgba(61,220,151,0.35);
+  cursor:zoom-in;
+  transition:transform .4s, box-shadow .4s;
+}
+.story-img:hover{
+  transform:translateY(-5px);
+  box-shadow:0 30px 70px -20px rgba(212,162,76,0.5);
+}
+
+  /* ============ STORYBOARD ============ */
+  .storyboard-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(260px, 1fr));
+    gap:1.5rem;
+  }
+  .sb-item{
+    aspect-ratio:16/10;
+    border-radius:12px;
+    overflow:hidden;
+    cursor:pointer;
+    position:relative;
+    background:linear-gradient(135deg, #1A3A2E, var(--bg-earth));
+    border:1px solid var(--border);
+    transition:transform .4s, border-color .4s;
+  }
+  .sb-item:hover{
+    transform:translateY(-6px);
+    border-color:var(--accent);
+  }
+  .sb-item .sb-label{
+    position:absolute; bottom:0; left:0; right:0;
+    padding:0.8rem 1rem;
+    background:linear-gradient(transparent, rgba(15,31,26,0.95));
+    font-size:0.85rem; color:var(--text);
+    font-weight:500;
+  }
+  .sb-item::before{
+    content:"🖼";
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    font-size:2.5rem; opacity:0.25;
+  }
+
+  /* ============ LIGHTBOX ============ */
+  .lightbox{
+    position:fixed; inset:0; z-index:200;
+    background:rgba(8,15,12,0.95);
+    display:none; align-items:center; justify-content:center;
+    padding:2rem;
+  }
+  .lightbox.active{ display:flex; }
+  .lightbox img{
+    max-width:90vw; max-height:85vh;
+    border-radius:12px; border:1px solid var(--accent-2);
+  }
+  .lightbox-close{
+    position:absolute; top:1.5rem; right:2rem;
+    font-size:2rem; color:var(--text); cursor:pointer;
+    background:none; border:none;
+  }
+
+  /* ============ COMUNIDAD ============ */
+  .videos-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(300px, 1fr));
+    gap:1.5rem;
+  }
+  .video-card{
+    background:var(--bg-primary);
+    border:1px solid var(--border);
+    border-radius:12px;
+    overflow:hidden;
+    transition:transform .3s, border-color .3s;
+    cursor:pointer;
+  }
+  .video-card:hover{
+    transform:translateY(-5px);
+    border-color:var(--accent);
+  }
+  .video-thumb{
+    aspect-ratio:16/9;
+    background:linear-gradient(135deg, #1A3A2E, #2B1F17);
+    position:relative;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .video-thumb::after{
+    content:"▶";
+    font-size:2.5rem; color:var(--accent);
+    opacity:0.85;
+    transition:transform .3s;
+  }
+  .video-card:hover .video-thumb::after{ transform:scale(1.15); }
+  .video-thumb .badge{
+    position:absolute; top:0.8rem; left:0.8rem;
+    background:var(--accent-2); color:#2B1F17;
+    font-size:0.7rem; font-weight:600;
+    padding:0.25rem 0.7rem; border-radius:20px;
+    letter-spacing:0.05em;
+  }
+  .video-info{ padding:1.2rem; }
+  .video-info h4{ font-size:1rem; margin-bottom:0.4rem; }
+  .video-info p{ font-size:0.85rem; color:var(--text-muted); }
+
+  /* ============ CTA FINAL ============ */
+  .cta-final{
+    text-align:center;
+    padding:7rem 2rem;
+    background:
+      radial-gradient(ellipse at center, rgba(61,220,151,0.12), transparent 70%),
+      var(--bg-secondary);
+    border-top:1px solid var(--border);
+    border-bottom:1px solid var(--border);
+  }
+  .cta-final h2{
+    font-size:clamp(2rem, 4vw, 3rem); margin-bottom:1.5rem;
+  }
+  .cta-final p{
+    color:var(--text-muted); max-width:550px;
+    margin:0 auto 2.5rem;
+  }
+
+  /* ============ FOOTER ============ */
+  footer{
+    padding:3rem 2rem;
+    text-align:center;
+    background:var(--bg-primary);
+    color:var(--text-muted);
+    font-size:0.85rem;
+  }
+  footer .logo{
+    font-family:'Cinzel', serif; color:var(--accent-2);
+    font-size:1.1rem; margin-bottom:1rem; letter-spacing:0.15em;
+  }
+  footer .links{
+    display:flex; gap:2rem; justify-content:center;
+    margin:1.5rem 0; flex-wrap:wrap;
+  }
+  footer .links a:hover{ color:var(--accent); }
+
+  /* ============ ANIMACIONES ============ */
+  .fade-in{
+    opacity:0; transform:translateY(30px);
+    transition:opacity .8s ease, transform .8s ease;
+  }
+  .fade-in.visible{
+    opacity:1; transform:translateY(0);
+  }
+
+  /* ============ LIGHTBOX (corregido) ============ */
+  .lightbox-content{
+    text-align:center;
+    max-width:90vw;
+  }
+  .lightbox-img{
+    max-width:90vw;
+    max-height:80vh;
+    border-radius:12px;
+    border:1px solid var(--accent-2);
+    object-fit:contain;
+    display:block;
+    margin:0 auto;
+  }
+  #lightbox-caption{
+    margin-top:1.2rem;
+    color:var(--text-muted);
+    font-size:0.95rem;
+  }
+
+  /* ============ MODAL DE VIDEO ============ */
+  .video-modal{
+    position:fixed; inset:0; z-index:300;
+    background:rgba(8,15,12,0.95);
+    display:none; align-items:center; justify-content:center;
+    padding:2rem;
+  }
+  .video-modal.active{ display:flex; }
+  .video-close{
+    position:absolute; top:1.5rem; right:2rem;
+    font-size:2rem; color:var(--text);
+    background:none; border:none; cursor:pointer;
+  }
+  .video-modal-content{
+    width:min(90vw, 1000px);
+    text-align:center;
+  }
+  .video-modal-content video{
+    width:100%;
+    aspect-ratio:16/9;
+    border-radius:12px;
+    border:1px solid var(--accent-2);
+    background:#000;
+    display:block;
+    object-fit:contain;
+  }
+  #videoTitle{
+    margin-top:1.2rem;
+    color:var(--text-muted);
+    font-size:1rem;
+  }
+
+  /* ============ MINIATURAS DE VIDEO (mejora visual) ============ */
+  .video-thumb img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+    transition:transform .5s;
+  }
+  .video-card:hover .video-thumb img{
+    transform:scale(1.08);
+  }
+  .play-icon{
+    position:absolute;
+    top:50%; left:50%;
+    transform:translate(-50%,-50%);
+    width:60px; height:60px;
+    border-radius:50%;
+    background:rgba(15,31,26,0.75);
+    border:2px solid var(--accent);
+    color:var(--accent);
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.3rem;
+    padding-left:4px;
+    transition:transform .3s, background .3s, color .3s;
+    z-index:2;
+  }
+  .video-card:hover .play-icon{
+    transform:translate(-50%,-50%) scale(1.15);
+    background:var(--accent);
+    color:#06231A;
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<nav>
+  <div class="logo">✦ TU JUEGO</div>
+  <ul>
+    <li><a href="#about">El Juego</a></li>
+    <li><a href="#story">Historia</a></li>
+    <li><a href="#storyboard">Storyboard</a></li>
+    <li><a href="#community">Comunidad</a></li>
+  </ul>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="hero-content">
+    <p class="eyebrow">Un juego en VR mágico</p>
+    <h1>Elemental Magic Battle, escoge bien tu elemento</h1>
+    <p>Descubre la historia, el arte y la evolución de nuestro videojuego indie. Acompáñanos en cada paso del desarrollo.</p>
+    <p> Alva Cornejo, Jose Javier </p>
+    <p> Carpio Paiva, Cesar Gonzalo</p>
+    <p> Palomino Rivadeneyra, Misael Jesus</p>
+    <p> Rivera Cruz, Diego Benjamin</p>
+    <p> Zapana Pariapaza, Gonzalo Rodrigo</p>
+    <div>
+      <a href="#story" class="btn btn-primary">Explorar la historia</a>
+      <a href="#storyboard" class="btn btn-ghost">Ver storyboard</a>
+    </div>
+  </div>
+</header>
+
+<!-- ============ ABOUT ============ -->
+<section id="about" class="bg-earth">
+  <div class="container">
+    <div class="about-grid fade-in">
+      <div class="about-text">
+        <p class="eyebrow" style="color:var(--accent-2); letter-spacing:0.35em; font-size:0.8rem; margin-bottom:1rem;">¿DE QUÉ TRATA?</p>
+        <h3>Storytelling</h3>
+        <p style="text-align: justify;">Adso es un mago joven, discípulo de Guillermo, un mago anciano quien está en su lecho de muerte, en el pasado, el anciano era el protector de los elementos mágicos en su aldea, (Fuego, Agua, Planta, Tierra, Electricidad, etc.) sin embargo ahora que esta débil, confía en Adso el conocimiento y poder de estos elementos, el joven es bastante capaz, aunque inexperto, es por esta razón que tendrá que aprender a dominar la magia responsablemente para defender a los indefensos. </p>
+        <p style="text-align: justify;">Antes de morir el anciano le entrega un libro de hechizos que ayudara a nuestro protagonista a dominar sus poderes y aprender conjuros, aunque con la muerte de su mentor se han liberado aquellos magos oscuros que desean aprender y profanar ese poder y harán todo lo posible para conseguirlo, Adso deberá enfrentarlos y derrotarlos para que el conocimiento arcano no caiga en manos tenebrosas, acompáñalo en esta gran aventura mágica.</p>
+      </div>
+      <img src="le-nom-de-la-rose-02.jpg" alt="Descripción de la imagen" class="about-img">
+    </div>
+  </div>
+</section>
+
+<!-- ============ STORYTELLING ============ -->
+<section id="story">
+  <div class="container">
+    <div class="section-header fade-in">
+      <p class="eyebrow">Lluvia de ideas</p>
+      <h2>¿Como llegamos a esto?</h2>
+      <p>Entre los 5 debatimo y dicutimos sobre el objetivo y aqui el proceso del "como" sucedio.</p>
+    </div>
+
+    <div class="story-visual fade-in">
+      <img src="Lluvia.png" alt="Lluvia de ideas para la creación del juego" class="story-img" onclick="openStoryImage(this)">
+    </div>
+  </div>
+</section>
+
+<!-- ============ STORYBOARD ============ -->
+<section id="storyboard" class="bg-secondary">
+  <div class="container">
+    <div class="section-header fade-in">
+      <p class="eyebrow">Storyboard</p>
+      <h2>Bocetos del mundo</h2>
+      <p>Ilustraciones hechas a mano que muestran cómo cobrará vida cada escena del juego. Haz clic para ampliarlas.</p>
+    </div>
+
+    <div class="storyboard-grid">
+      <div class="sb-item fade-in" onclick="openLightbox(this)">
+        <img src="Storyboard/img1.png" alt="El despertar — Bosque ancestral">
+        <span class="sb-label">Usuario sostiene la varita mágica</span>
+      </div>
+      <div class="sb-item fade-in" onclick="openLightbox(this)">
+        <img src="Storyboard/img2.png" alt="La aldea de los hilos verdes">
+        <span class="sb-label">Usuario sostiene la varita y el libro mágico</span>
+      </div>
+      <div class="sb-item fade-in" onclick="openLightbox(this)">
+        <img src="Storyboard/img3.png" alt="El ritual del sacrificio">
+        <span class="sb-label">El usuario abre el libro y ve las opciones que tienes</span>
+      </div>
+      <div class="sb-item fade-in" onclick="openLightbox(this)">
+        <img src="Storyboard/img4.png" alt="La raíz del mundo">
+        <span class="sb-label">Selección de la página de elementos</span>
+      </div>
+      <div class="sb-item fade-in" onclick="openLightbox(this)">
+        <img src="Storyboard/img5.png" alt="El templo olvidado">
+        <span class="sb-label">Selección del elemento fuego</span>
+      </div>
+      <div class="sb-item fade-in" onclick="openLightbox(this)">
+        <img src="Storyboard/img6.png" alt="El enfrentamiento final">
+        <span class="sb-label">Aplicación de un conjuro de tipo Fuego</span>
+      </div>
+      <div class="sb-item fade-in" onclick="openLightbox(this)">
+        <img src="Storyboard/img7.png" alt="El enfrentamiento final">
+        <span class="sb-label">Lanzamiento del hechizo de tipo Fuego</span>
+      </div>
+      <div class="sb-item fade-in" onclick="openLightbox(this)">
+        <img src="Storyboard/img8.png" alt="El enfrentamiento final">
+        <span class="sb-label">Selección de la página de magos enemigos</span>
+      </div>
+      <div class="sb-item fade-in" onclick="openLightbox(this)">
+        <img src="Storyboard/img9.png" alt="El enfrentamiento final">
+        <span class="sb-label">Selección de un hechizo tipo Agua (Recuperación de Mana)</span>
+      </div>
+      <div class="sb-item fade-in" onclick="openLightbox(this)">
+        <img src="Storyboard/img10.png" alt="El enfrentamiento final">
+        <span class="sb-label">Selección de un hechizo tipo Planta (Recuperación de Vida)</span>
+      </div>
+      <div class="sb-item fade-in" onclick="openLightbox(this)">
+        <img src="Storyboard/img11.png" alt="El enfrentamiento final">
+        <span class="sb-label">Aparición de un mago enemigo (Fuego)</span>
+      </div>
+      <div class="sb-item fade-in" onclick="openLightbox(this)">
+        <img src="Storyboard/img12.png" alt="El enfrentamiento final">
+        <span class="sb-label">El usuario corrobora si es un mago rival</span>
+      </div>
+      <div class="sb-item fade-in" onclick="openLightbox(this)">
+        <img src="Storyboard/img13.png" alt="El enfrentamiento final">
+        <span class="sb-label">Selección de un hechizo super-efectivo (Agua)</span>
+      </div>
+      <div class="sb-item fade-in" onclick="openLightbox(this)">
+        <img src="Storyboard/img14.png" alt="El enfrentamiento final">
+        <span class="sb-label">Lanzamiento del hechico super-efectivo (Agua)</span>
+      </div>
+      <div class="sb-item fade-in" onclick="openLightbox(this)">
+        <img src="Storyboard/img15.png" alt="El enfrentamiento final">
+        <span class="sb-label">El mago rival es derrotado</span>
+      </div>
+      <div class="sb-item fade-in" onclick="openLightbox(this)">
+        <img src="Storyboard/img16.png" alt="El enfrentamiento final">
+        <span class="sb-label">Se tacha de la lista de magos buscados al reciente derrotado</span>
+      </div>
+      <div class="sb-item fade-in" onclick="openLightbox(this)">
+        <img src="Storyboard/img17.png" alt="El enfrentamiento final">
+        <span class="sb-label">Selección de un hechizo poco-efectivo (Planta)</span>
+      </div>
+      <div class="sb-item fade-in" onclick="openLightbox(this)">
+        <img src="Storyboard/img18.png" alt="El enfrentamiento final">
+        <span class="sb-label">Lanzamiento del hechizo poco-efectivo (Planta)</span>
+      </div>
+      <div class="sb-item fade-in" onclick="openLightbox(this)">
+        <img src="Storyboard/img19.png" alt="El enfrentamiento final">
+        <span class="sb-label">El mago rival no lanza un hechizo y recibimos daño</span>
+      </div>
+      <div class="sb-item fade-in" onclick="openLightbox(this)">
+        <img src="Storyboard/img20.png" alt="El enfrentamiento final">
+        <span class="sb-label">Final positivo (Ganamos)</span>
+      </div>
+      <div class="sb-item fade-in" onclick="openLightbox(this)">
+        <img src="Storyboard/img21.png" alt="El enfrentamiento final">
+        <span class="sb-label">Final negativo (Perdimos)</span>
+      </div>
+    </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ LIGHTBOX ============ -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <div class="lightbox-content" onclick="event.stopPropagation()">
+    <img class="lightbox-img" src="" alt="">
+    <p id="lightbox-caption"></p>
+  </div>
+</div>
+
+<!-- ============ MODAL DE VIDEO ============ -->
+<div class="video-modal" id="videoModal" onclick="closeVideo()">
+  <button class="video-close" onclick="closeVideo()">✕</button>
+  <div class="video-modal-content" onclick="event.stopPropagation()">
+    <video id="videoPlayer" controls playsinline preload="metadata"></video>
+    <p id="videoTitle"></p>
+  </div>
+</div>
+
+<!-- ============ COMUNIDAD ============ -->
+<section id="community">
+  <div class="container">
+    <div class="section-header fade-in">
+      <p class="eyebrow">Comunidad</p>
+      <h2>Ellos ya lo probaron</h2>
+      <p>Videos de jugadores probando la versión más reciente de nuestro prototipo. ¡Gracias por ayudarnos a mejorar!</p>
+    </div>
+
+    <div class="videos-grid">
+
+      <div class="video-card fade-in" onclick="openVideo('Videos/video1.mp4', 'Primeras impresiones — Gameplay comentado')">
+        <div class="video-thumb">
+          <img src="Videos/CSUNSA.png" alt="Primera prueba">
+          <span class="badge">v0.4</span>
+          <span class="play-icon">▶</span>
+        </div>
+        <div class="video-info">
+          <h4>Primer testeo de la primera versión</h4>
+          <p>Por: Camila Blanco · 5 min</p>
+        </div>
+      </div>
+    
+      <div class="video-card fade-in" onclick="openVideo('Videos/video2.mp4', 'Explorando el bosque ancestral')">
+        <div class="video-thumb">
+          <img src="Videos/CSUNSA.png" alt="Segunda prueba">
+          <span class="badge">v0.4</span>
+          <span class="play-icon">▶</span>
+        </div>
+        <div class="video-info">
+          <h4>Segundo testeo de la primera versión</h4>
+          <p>Por: Yadhira Barra · 4 min</p>
+        </div>
+      </div>
+    
+      <div class="video-card fade-in" onclick="openVideo('Videos/video3.mp4', 'Reacciones al sistema de magia')">
+        <div class="video-thumb">
+          <img src="Videos/CSUNSA.png" alt="Tercera prueba">
+          <span class="badge">v0.3</span>
+          <span class="play-icon">▶</span>
+        </div>
+        <div class="video-info">
+          <h4>Tercer testeo de la primera versión</h4>
+          <p>Por: Alan Duran · 5 min</p>
+        </div>
+      </div>
+    
+      <div class="video-card fade-in" onclick="openVideo('Videos/video4.mp4', 'Análisis del arte y ambientación')">
+        <div class="video-thumb">
+          <img src="Videos/CSUNSA.png" alt="Cuarta prueba">
+          <span class="badge">v0.4</span>
+          <span class="play-icon">▶</span>
+        </div>
+        <div class="video-info">
+          <h4>Cuarto testeo de la primera versión</h4>
+          <p>Por: Carlos Huarca · 4 min</p>
+        </div>
+      </div>
+
+      <div class="video-card fade-in" onclick="openVideo('Videos/video6.mp4', 'Primeras impresiones — Gameplay comentado')">
+        <div class="video-thumb">
+          <img src="Videos/CSUNSA.png" alt="Quinta prueba">
+          <span class="badge">v0.4</span>
+          <span class="play-icon">▶</span>
+        </div>
+        <div class="video-info">
+          <h4>Quinto testeo de la primera versión</h4>
+          <p>Por: Karina Calcina · 4 min</p>
+        </div>
+      </div>
+
+      <div class="video-card fade-in" onclick="openVideo('Videos/video7.mp4', 'Primeras impresiones — Gameplay comentado')">
+        <div class="video-thumb">
+          <img src="Videos/CSUNSA.png" alt="Sexta prueba">
+          <span class="badge">v0.4</span>
+          <span class="play-icon">▶</span>
+        </div>
+        <div class="video-info">
+          <h4>Sexto testeo de la primera versión</h4>
+          <p>Por: Diego Abensur · 4 min</p>
+        </div>
+      </div>
+
+      <div class="video-card fade-in" onclick="openVideo('Videos/video8.mp4', 'Primeras impresiones — Gameplay comentado')">
+        <div class="video-thumb">
+          <img src="Videos/CSUNSA.png" alt="Sexta prueba">
+          <span class="badge">v0.4</span>
+          <span class="play-icon">▶</span>
+        </div>
+        <div class="video-info">
+          <h4>Septimo testeo de la primera versión</h4>
+          <p>Por: D. Carpio · 2 min</p>
+        </div>
+      </div>
+
+      <div class="video-card fade-in" onclick="openVideo('Videos/video9.mp4', 'Primeras impresiones — Gameplay comentado')">
+        <div class="video-thumb">
+          <img src="Videos/CSUNSA.png" alt="Sexta prueba">
+          <span class="badge">v0.4</span>
+          <span class="play-icon">▶</span>
+        </div>
+        <div class="video-info">
+          <h4>Octavo testeo de la primera versión</h4>
+          <p>Por: C. Carpio · 2 min</p>
+        </div>
+      </div>
+
+      <div class="video-card fade-in" onclick="openVideo('Videos/video5.mp4', 'Primeras impresiones — Gameplay comentado')">
+        <div class="video-thumb">
+          <img src="Videos/CSUNSA.png" alt="Sexta prueba">
+          <span class="badge">v0.4</span>
+          <span class="play-icon">▶</span>
+        </div>
+        <div class="video-info">
+          <h4>Noveno testeo de la primera versión</h4>
+          <p>Por: Axel Gamarra · 2 min</p>
+        </div>
+      </div>
+
+      <div class="video-card fade-in" onclick="openVideo('Videos/video10.mp4', 'Primeras impresiones — Gameplay comentado')">
+        <div class="video-thumb">
+          <img src="Videos/CSUNSA.png" alt="Sexta prueba">
+          <span class="badge">v0.4</span>
+          <span class="play-icon">▶</span>
+        </div>
+        <div class="video-info">
+          <h4>Decimo testeo de la primera versión</h4>
+          <p>Por: Mary Cahuana · 2 min</p>
+        </div>
+      </div>
+
+      <div class="video-card fade-in" onclick="openVideo('Videos/video11.mp4', 'Primeras impresiones — Gameplay comentado')">
+        <div class="video-thumb">
+          <img src="Videos/CSUNSA.png" alt="Sexta prueba">
+          <span class="badge">v0.4</span>
+          <span class="play-icon">▶</span>
+        </div>
+        <div class="video-info">
+          <h4>Decimoprimero testeo de la primera versión</h4>
+          <p>Por: Andrea Delgado · 2 min</p>
+        </div>
+      </div>
+
+      <div class="video-card fade-in" onclick="openVideo('Videos/video12.mp4', 'Primeras impresiones — Gameplay comentado')">
+        <div class="video-thumb">
+          <img src="Videos/CSUNSA.png" alt="Sexta prueba">
+          <span class="badge">v0.4</span>
+          <span class="play-icon">▶</span>
+        </div>
+        <div class="video-info">
+          <h4>Decimosegundo testeo de la primera versión</h4>
+          <p>Por: Amanda Calcina · 2 min</p>
+        </div>
+      </div>
+
+      <div class="video-card fade-in" onclick="openVideo('Videos/video13.mp4', 'Primeras impresiones — Gameplay comentado')">
+        <div class="video-thumb">
+          <img src="Videos/CSUNSA.png" alt="Sexta prueba">
+          <span class="badge">v0.4</span>
+          <span class="play-icon">▶</span>
+        </div>
+        <div class="video-info">
+          <h4>Decimotercero de la primera versión</h4>
+          <p>Por: Astrid Chavez · 2 min</p>
+        </div>
+      </div>
+
+      <div class="video-card fade-in" onclick="openVideo('Videos/video14.mp4', 'Primeras impresiones — Gameplay comentado')">
+        <div class="video-thumb">
+          <img src="Videos/CSUNSA.png" alt="Sexta prueba">
+          <span class="badge">v0.4</span>
+          <span class="play-icon">▶</span>
+        </div>
+        <div class="video-info">
+          <h4>Decimocuarto testeo de la primera versión</h4>
+          <p>Por: Fiorella Febres · 2 min</p>
+        </div>
+      </div>
+    
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA FINAL ============ -->
+<section class="cta-final">
+  <div class="container fade-in">
+    <h2>¿Quieres ser parte del viaje?</h2>
+    <p>Únete a nuestra comunidad, prueba las versiones tempranas y ayúdanos a dar forma a este mundo mágico.</p>
+    <a href="#" class="btn btn-primary">Únete al Discord</a>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="logo">✦ TU JUEGO</div>
+  <div class="links">
+    <a href="#">Twitter</a>
+    <a href="#">Discord</a>
+    <a href="#">YouTube</a>
+    <a href="#">Contacto</a>
+  </div>
+  <p>© 2026 Tu Estudio. Todos los derechos reservados.</p>
+</footer>
+
+<!-- ============ JAVASCRIPT ============ -->
+<script>
+  /* ============ LIGHTBOX ============ */
+  function openLightbox(el){
+    const img = el.querySelector('img');
+    const caption = el.querySelector('.sb-label')?.textContent || '';
+    const lightbox = document.getElementById('lightbox');
+    const bigImg = lightbox.querySelector('.lightbox-img');
+
+    bigImg.src = img.src;
+    bigImg.alt = img.alt;
+    document.getElementById('lightbox-caption').textContent = caption;
+    lightbox.classList.add('active');
+  }
+
+  function closeLightbox(){
+    document.getElementById('lightbox').classList.remove('active');
+  }
+
+  /* ============ LIGHTBOX PARA LA IMAGEN DE HISTORIA ============ */
+  function openStoryImage(img){
+  const lightbox = document.getElementById('lightbox');
+  const bigImg = lightbox.querySelector('.lightbox-img');
+
+  bigImg.src = img.src;
+  bigImg.alt = img.alt;
+  document.getElementById('lightbox-caption').textContent = img.alt;
+  lightbox.classList.add('active');
+  }
+
+  /* ============ VIDEO MODAL ============ */
+  function openVideo(videoSrc, title){
+    const modal = document.getElementById('videoModal');
+    const player = document.getElementById('videoPlayer');
+
+    player.src = videoSrc;
+    document.getElementById('videoTitle').textContent = title;
+    modal.classList.add('active');
+    player.play().catch(() => {});
+  }
+
+  function closeVideo(){
+    const modal = document.getElementById('videoModal');
+    const player = document.getElementById('videoPlayer');
+
+    player.pause();
+    player.currentTime = 0;
+    player.removeAttribute('src');
+    player.load();
+
+    modal.classList.remove('active');
+  }
+
+  /* ============ CERRAR CON ESCAPE ============ */
+  document.addEventListener('keydown', e => {
+    if(e.key === 'Escape'){
+      closeLightbox();
+      closeVideo();
+    }
+  });
+
+  /* ============ FADE-IN AL HACER SCROLL ============ */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
